@@ -1,0 +1,35 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: exporter
+  namespace: default
+  labels:
+    app: exporter
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 2
+  selector:
+    matchLabels:
+      app: exporter
+  template:
+    metadata:
+      labels:
+        app: exporter
+    spec:
+      containers:
+      - name: exporter
+        image: battlesnakeio/exporter:{{ .Values.release }}
+        command: ["/bin/exporter"]
+        resources:
+          limits:
+            cpu: "1"
+            memory: 750M
+          requests:
+            cpu: "0.5"
+            memory: 500M
+        ports:
+          - containerPort: 8000
