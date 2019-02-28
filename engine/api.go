@@ -88,6 +88,7 @@ func GetGameFrames(gameID string, offset, frameCount int) ([]*GameFrame, error) 
 		if len(newFrames) < batchSize || len(newFrames) == frameCount {
 			break
 		}
+		offset += batchSize
 		frameCount -= batchSize
 	}
 
